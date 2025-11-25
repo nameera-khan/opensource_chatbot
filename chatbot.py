@@ -7,40 +7,34 @@ from openai import OpenAI
 # ------------------------------------------------------------------------------
 st.set_page_config(
     page_title="Ask for Data",
-    page_icon="🥲",
+    page_icon="📊",
     layout="wide"
 )
 
 # ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
 # ------------------------------------------------------------------------------
+# Make sure you have set your OpenRouter API key in Streamlit secrets as OPENROUTER_API_KEY
 client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
     api_key=st.secrets["OPENROUTER_API_KEY"],
+    base_url="https://openrouter.ai/api/v1"
 )
 
-OPENROUTER_HEADERS = {
-    "HTTP-Referer": "https://opensourcechatbot-gj29glq2zaamtcb5srpn3l.streamlit.app",
-    "X-Title": "Opensource Chatbot"
-}
-
-MODEL_NAME = "tngtech/deepseek-r1t2-chimera:free"
+MODEL_NAME = "tngtech/deepseek-r1t2-chimera"
 
 # ------------------------------------------------------------------------------
-# Reusable LLM Query Function
+# LLM Query Function
 # ------------------------------------------------------------------------------
 def ask_openrouter(messages, max_tokens=600, temperature=0.2):
-    """Call OpenRouter LLM with consistent error handling."""
+    """Call OpenRouter LLM with error handling."""
     try:
         response = client.chat.completions.create(
             model=MODEL_NAME,
             messages=messages,
             max_tokens=max_tokens,
-            temperature=temperature,
-            extra_headers=OPENROUTER_HEADERS
+            temperature=temperature
         )
         return response.choices[0].message.content
-
     except Exception as e:
         st.error("❌ OpenRouter API Error")
         st.error(str(e))
@@ -101,24 +95,24 @@ if st.session_state.df is not None:
         # Build data context
         if len(df) > 100:
             data_context = f"""
-            Dataset shape: {df.shape}
-            Columns: {list(df.columns)}
-            Data types: {df.dtypes.to_dict()}
-            """
+Dataset shape: {df.shape}
+Columns: {list(df.columns)}
+Data types: {df.dtypes.to_dict()}
+"""
         else:
             data_context = f"Full dataset:\n{df.to_string()}"
 
         system_prompt = f"""
-        You are a data analyst assistant.
-        The user uploaded a CSV file with this information:
+You are a data analyst assistant.
+The user uploaded a CSV file with this information:
 
-        {data_context}
+{data_context}
 
-        Rules:
-        - Answer clearly and concisely
-        - Provide specific insights
-        - Use only the provided data
-        """
+Rules:
+- Answer clearly and concisely
+- Provide specific insights
+- Use only the provided data
+"""
 
         # Generate Answer
         with st.chat_message("assistant"):
