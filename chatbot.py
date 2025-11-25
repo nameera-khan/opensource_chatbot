@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd 
 import openai 
+from openai import OpenAI
 
 st.set_page_config(
     page_title = 'ask for data',
@@ -9,7 +10,7 @@ st.set_page_config(
 )
 
 #initialise client 
-client = openai.OpenAI(api_key = st.secrets['OPENROUTER_API_KEY'])
+client = OpenAI(api_key = st.secrets['OPENROUTER_API_KEY'])
 
                        
 if "messages" not in st.session_state:
