@@ -1,8 +1,8 @@
 import os
 import streamlit as st
 import pandas as pd
-from openai import OpenAI
-
+import requests 
+import json
 # ------------------------------------------------------------------------------
 # Streamlit Config
 # ------------------------------------------------------------------------------
@@ -18,36 +18,34 @@ st.set_page_config(
 # Make sure your .streamlit/secrets.toml has:
 # OPENROUTER_API_KEY = "or-xxxx-your-key"
 
-try:
-    api_key = st.secrets["OPENROUTER_API_KEY"].strip().replace('"', '')
-    os.environ["OPENAI_API_KEY"] = api_key
-except Exception as e:
-    st.error("❌ Failed to load OpenRouter API key from Streamlit secrets.")
-    st.stop()
+
 
 # ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
 # ------------------------------------------------------------------------------
-client = OpenAI(base_url="https://openrouter.ai/api/v1")
 MODEL_NAME = "tngtech/deepseek-r1t2-chimera"
-
+response = requests.post(
+  url="https://openrouter.ai/api/v1/chat/completions",
+  headers={
+    "Authorization": "Bearer <OPENROUTER_API_KEY>",
+    "Content-Type": "application/json",
+ #   "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
+  #  "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
+  },
+  data=json.dumps({
+    "model": "tngtech/deepseek-r1t2-chimera:free",
+    "messages": [
+      {
+        "role": "user",
+        "content": "What is the meaning of life?"
+      }
+    ]
+  })
+)
 # ------------------------------------------------------------------------------
 # LLM Query Function
 # ------------------------------------------------------------------------------
-def ask_openrouter(messages, max_tokens=600, temperature=0.2):
-    """Call OpenRouter LLM with error handling."""
-    try:
-        response = client.chat.completions.create(
-            model=MODEL_NAME,
-            messages=messages,
-            max_tokens=max_tokens,
-            temperature=temperature
-        )
-        return response.choices[0].message.content
-    except Exception as e:
-        st.error("❌ OpenRouter API Error")
-        st.error(str(e))
-        return None
+
 
 # ------------------------------------------------------------------------------
 # UI State Initialization
