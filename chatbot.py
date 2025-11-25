@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 from openai import OpenAI
@@ -12,14 +13,16 @@ st.set_page_config(
 )
 
 # ------------------------------------------------------------------------------
+# Set OpenRouter API Key from Streamlit secrets
+# ------------------------------------------------------------------------------
+# Make sure your .streamlit/secrets.toml has:
+# OPENROUTER_API_KEY = "or-xxxx-your-key"
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENROUTER_API_KEY"]
+
+# ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
 # ------------------------------------------------------------------------------
-# Make sure you have set your OpenRouter API key in Streamlit secrets as OPENROUTER_API_KEY
-client = OpenAI(
-    api_key=st.secrets["OPENROUTER_API_KEY"],
-    base_url="https://openrouter.ai/api/v1"
-)
-
+client = OpenAI(base_url="https://openrouter.ai/api/v1")
 MODEL_NAME = "tngtech/deepseek-r1t2-chimera"
 
 # ------------------------------------------------------------------------------
