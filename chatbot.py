@@ -125,7 +125,8 @@ Rules:
                 },
                 data=json.dumps({
                     "model": "tngtech/deepseek-r1t2-chimera:free",
-                    "messages": messages
+                    "messages": [{"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_input}]
                 })
             )
 
