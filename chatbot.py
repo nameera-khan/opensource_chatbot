@@ -117,32 +117,31 @@ Rules:
         with st.chat_message("assistant"):
             with st.spinner("Thinking…"):
                 response_data = response.json()
-                            
-                            # Check if the expected keys exist in the response
-                            if "choices" in response_data and len(response_data["choices"]) > 0:
-                                if "message" in response_data["choices"][0] and "content" in response_data["choices"][0]["message"]:
-                                    reply = response_data["choices"][0]["message"]["content"]
-                                    
-                                    st.markdown(reply)
-                                    st.session_state.messages.append(
-                                        {"role": "assistant", "content": reply}
-                                    )
-                                else:
-                                    st.error("Unexpected response format: missing message content")
-                            else:
-                                st.error("No choices available in the response")
-                        else:
-                            st.error(f"API request failed with status code {response.status_code}")
-                            # Print the error response for debugging
-                            st.write(f"Error details: {response.text}")
-                            
-                    except requests.exceptions.RequestException as e:
-                        st.error(f"Request error: {str(e)}")
-                    except KeyError as e:
-                        st.error(f"Key error in response parsing: {str(e)}")
-                        st.write(f"Full response: {response.text}")
-                    except Exception as e:
-                        st.error(f"Unexpected error: {str(e)}")
+                # Check if the expected keys exist in the response
+                if "choices" in response_data and len(response_data["choices"]) > 0:
+                    if "message" in response_data["choices"][0] and "content" in response_data["choices"][0]["message"]:
+                        reply = response_data["choices"][0]["message"]["content"]
+                        
+                        st.markdown(reply)
+                        st.session_state.messages.append(
+                            {"role": "assistant", "content": reply}
+                        )
+                    else:
+                        st.error("Unexpected response format: missing message content")
+                else:
+                    st.error("No choices available in the response")
+            else:
+                st.error(f"API request failed with status code {response.status_code}")
+                # Print the error response for debugging
+                st.write(f"Error details: {response.text}")
+                
+        except requests.exceptions.RequestException as e:
+            st.error(f"Request error: {str(e)}")
+        except KeyError as e:
+            st.error(f"Key error in response parsing: {str(e)}")
+            st.write(f"Full response: {response.text}")
+        except Exception as e:
+            st.error(f"Unexpected error: {str(e)}")
 else:
     st.info("Upload a CSV file to begin.")
                 #response = requests.post(
