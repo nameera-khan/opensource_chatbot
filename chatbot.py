@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 #initialise client 
-client = openai.OpenAI(api_key = st.secret['OPENROUTER_API_KEY'])
+client = openai.OpenAI(api_key = st.secrets['OPENROUTER_API_KEY'])
 
                        
 if "messages" not in st.session_state:
