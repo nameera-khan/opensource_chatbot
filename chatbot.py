@@ -13,11 +13,17 @@ st.set_page_config(
 )
 
 # ------------------------------------------------------------------------------
-# Set OpenRouter API Key from Streamlit secrets
+# Set OpenRouter API Key safely
 # ------------------------------------------------------------------------------
 # Make sure your .streamlit/secrets.toml has:
 # OPENROUTER_API_KEY = "or-xxxx-your-key"
-os.environ["OPENAI_API_KEY"] = st.secrets["OPENROUTER_API_KEY"]
+
+try:
+    api_key = st.secrets["OPENROUTER_API_KEY"].strip().replace('"', '')
+    os.environ["OPENAI_API_KEY"] = api_key
+except Exception as e:
+    st.error("❌ Failed to load OpenRouter API key from Streamlit secrets.")
+    st.stop()
 
 # ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
