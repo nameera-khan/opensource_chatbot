@@ -84,7 +84,7 @@ if st.session_state.df is not None:
         st.spinner('thinking...')
         try:
             response = client.chat.completions.create(
-                model = 'tngtech/deepseek-r1t2-chimera:free',
+                model = 'openrouter/tngtech/deepseek-r1t2-chimera:free', #prefixed with openrouter/
                 messages = [
                     {"role":"system", "content":system_prompt},
                     {"role":"user","content":user_input}
