@@ -23,28 +23,21 @@ st.set_page_config(
 # ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
 # ------------------------------------------------------------------------------
-MODEL_NAME = "tngtech/deepseek-r1t2-chimera"
 response = requests.post(
   url="https://openrouter.ai/api/v1/chat/completions",
   headers={
-    "Authorization": "Bearer <OPENROUTER_API_KEY>",
+    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
     "Content-Type": "application/json",
  #   "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
   #  "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
   },
   data=json.dumps({
     "model": "tngtech/deepseek-r1t2-chimera:free",
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the meaning of life?"
-      }
+    "messages": messages
     ]
   })
 )
-# ------------------------------------------------------------------------------
-# LLM Query Function
-# ------------------------------------------------------------------------------
+
 
 
 # ------------------------------------------------------------------------------
@@ -129,7 +122,8 @@ Rules:
                     {"role": "user", "content": user_input}
                 ]
 
-                reply = response.choices[0].message.content
+                resp_json = response.json()
+                reply = resp_json["choices"][0]["message"]["content"]
 
                 if reply:
                     st.markdown(reply)
