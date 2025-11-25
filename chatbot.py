@@ -23,19 +23,19 @@ OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 # ------------------------------------------------------------------------------
 # Initialize OpenRouter Client
 # ------------------------------------------------------------------------------
-response = requests.post(
-  url="https://openrouter.ai/api/v1/chat/completions",
-  headers={
-    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-    "Content-Type": "application/json",
+#response = requests.post(
+ # url="https://openrouter.ai/api/v1/chat/completions",
+  #headers={
+   # "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+    #"Content-Type": "application/json",
  #   "HTTP-Referer": "<YOUR_SITE_URL>", # Optional. Site URL for rankings on openrouter.ai.
   #  "X-Title": "<YOUR_SITE_NAME>", # Optional. Site title for rankings on openrouter.ai.
-  },
-  data=json.dumps({
-    "model": "tngtech/deepseek-r1t2-chimera:free",
-    "messages": messages
-    })
-)
+  #},
+  #data=json.dumps({
+   # "model": "tngtech/deepseek-r1t2-chimera:free",
+    #"messages": messages
+    #})
+#)
 
 
 
@@ -115,22 +115,25 @@ Rules:
 
         # Generate Answer
         with st.chat_message("assistant"):
-            with st.spinner("Thinking…"):
-                messages = [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_input}
-                ]
+        with st.spinner("Thinking…"):
 
-                resp_json = response.json()
-                reply = resp_json["choices"][0]["message"]["content"]
+            response = requests.post(
+                url="https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                data=json.dumps({
+                    "model": "tngtech/deepseek-r1t2-chimera:free",
+                    "messages": messages
+                })
+            )
 
-                if reply:
-                    st.markdown(reply)
-                    st.session_state.messages.append(
-                        {"role": "assistant", "content": reply}
-                    )
-                else:
-                    st.error("Failed to generate response. Try again.")
+            reply = response.json()["choices"][0]["message"]["content"]
 
+            st.markdown(reply)
+            st.session_state.messages.append(
+                {"role": "assistant", "content": reply}
+            )
 else:
     st.info("Upload a CSV file to begin.")
