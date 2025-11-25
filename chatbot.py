@@ -115,26 +115,26 @@ Rules:
 
         # Generate Answer
         with st.chat_message("assistant"):
-        with st.spinner("Thinking…"):
-
-            response = requests.post(
-                url="https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                    "Content-Type": "application/json",
-                },
-                data=json.dumps({
-                    "model": "tngtech/deepseek-r1t2-chimera:free",
-                    "messages": [{"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_input}]
-                })
-            )
-
-            reply = response.json()["choices"][0]["message"]["content"]
-
-            st.markdown(reply)
-            st.session_state.messages.append(
-                {"role": "assistant", "content": reply}
-            )
+            with st.spinner("Thinking…"):
+    
+                response = requests.post(
+                    url="https://openrouter.ai/api/v1/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                        "Content-Type": "application/json",
+                    },
+                    data=json.dumps({
+                        "model": "tngtech/deepseek-r1t2-chimera:free",
+                        "messages": [{"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_input}]
+                    })
+                )
+    
+                reply = response.json()["choices"][0]["message"]["content"]
+    
+                st.markdown(reply)
+                st.session_state.messages.append(
+                    {"role": "assistant", "content": reply}
+                )
 else:
     st.info("Upload a CSV file to begin.")
