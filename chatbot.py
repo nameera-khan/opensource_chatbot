@@ -80,7 +80,7 @@ if st.session_state.df is not None:
     with st.chat_message('assistant'):
         st.spinner('thinking...')
         try:
-            response = client.chat.completion.create(
+            response = client.chat.completions.create(
                 model = 'tngtech/deepseek-r1t2-chimera:free',
                 messages = [
                     {"role":"system", "content":system_prompt},
