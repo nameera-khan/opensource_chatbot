@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd 
 import openai 
 from openai import OpenAI
+from os import getenv
 
 st.set_page_config(
     page_title = 'ask for data',
