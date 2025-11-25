@@ -129,7 +129,7 @@ Rules:
                     {"role": "user", "content": user_input}
                 ]
 
-                reply = ask_openrouter(messages)
+                reply = response.choices[0].message.content
 
                 if reply:
                     st.markdown(reply)
