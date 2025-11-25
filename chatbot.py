@@ -34,8 +34,7 @@ response = requests.post(
   data=json.dumps({
     "model": "tngtech/deepseek-r1t2-chimera:free",
     "messages": messages
-    ]
-  })
+    })
 )
 
 
