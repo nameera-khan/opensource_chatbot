@@ -89,7 +89,7 @@ if st.session_state.df is not None:
                 temperature=0.1, max_tokens=800)
             reply = response.choices[0].message.content
             st.markdown(reply)
-            st.session_state.messages.append({'role':'assistant','content':reply)
+            st.session_state.messages.append({'role':'assistant','content':reply})
         except Exception as e:
             st.error(f'error generation response: {str(e)}')
             st.info('try again')
