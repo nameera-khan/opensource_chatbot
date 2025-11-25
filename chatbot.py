@@ -16,7 +16,7 @@ st.set_page_config(
 # Set OpenRouter API Key safely
 # ------------------------------------------------------------------------------
 # Make sure your .streamlit/secrets.toml has:
-# OPENROUTER_API_KEY = "or-xxxx-your-key"
+OPENROUTER_API_KEY = st.secrets(OPENROUTER_API_KEY)
 
 
 
