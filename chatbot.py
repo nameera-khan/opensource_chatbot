@@ -12,7 +12,7 @@ st.set_page_config(
 #initialise client 
 client = OpenAI(
   base_url="https://openrouter.ai/api/v1",
-  api_key=['OPENROUTER_API_KEY'],
+  api_key=['OPENROUTER_API_KEY']
 )
                        
 if "messages" not in st.session_state:
