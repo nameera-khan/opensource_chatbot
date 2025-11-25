@@ -130,10 +130,7 @@ Rules:
                         st.error("Unexpected response format: missing message content")
                 else:
                     st.error("No choices available in the response")
-            else:
-                st.error(f"API request failed with status code {response.status_code}")
-                # Print the error response for debugging
-                st.write(f"Error details: {response.text}")
+            
                 
         except requests.exceptions.RequestException as e:
             st.error(f"Request error: {str(e)}")
